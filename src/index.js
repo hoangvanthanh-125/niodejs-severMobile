@@ -11,6 +11,6 @@ app.engine('handlebars', engine({extname:'hbs'}));
 app.set('view engine', 'handlebars');
 app.set('views', path.join(__dirname,'./resource/views'));
 
-const PORT = 3000;
+const PORT = 3000 ||process.env.PORT ;
 route(app)
 app.listen(process.env.PORT,() => console.log('app chay'));
