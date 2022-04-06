@@ -13,4 +13,4 @@ app.set('views', path.join(__dirname,'./resource/views'));
 
 const PORT = 3000;
 route(app)
-app.listen(PORT,() => console.log('app chay'));
+app.listen(process.env.PORT,() => console.log('app chay'));
