@@ -1,12 +1,12 @@
 const CategoryModel = require("./../../models/category");
 const ProductModel = require("./../../models/Products");
 const ProductsController = require("./ProductsController");
-class CategoryModel {
+class CategoryControler {
   //GET /category
   getCategory = async (req, res) => {
     try {
-      const categorys = await CategoryModel.find();
-      res.status(200).json(categorys);
+      const categories = await CategoryModel.find();
+      res.status(200).json(categories);
     } catch (error) {
       res.status(500).json({
         error,
@@ -29,4 +29,4 @@ class CategoryModel {
   };
   //put : /products/:id
 }
-module.exports = new CategoryModel();
+module.exports = new CategoryControler;

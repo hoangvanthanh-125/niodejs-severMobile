@@ -6,7 +6,7 @@ const categoryRouter = require('./category');
 function route(app) {
   app.use('/news',newsRouter);
   app.use('/products',productsRouter);
-  app.use('category',categoryRouter)
+  app.use('/category',categoryRouter)
   app.use('/',siteRouter)
 
 
