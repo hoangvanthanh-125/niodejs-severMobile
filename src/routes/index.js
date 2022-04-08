@@ -10,7 +10,7 @@ function route(app) {
   app.use('/products',productsRouter);
   app.use('/category',categoryRouter);
   app.use('/auth',authRouter);
-  app.use('cart',cartRouter);
+  app.use('/cart',cartRouter);
   app.use('/',siteRouter)
 
 
