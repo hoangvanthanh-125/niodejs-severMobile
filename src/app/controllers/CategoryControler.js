@@ -1,5 +1,5 @@
 const CategoryModel = require("./../../models/category");
-const ProductModel = require("./../../models/Products");
+const  {ProductModel} = require("./../../models/Products");
 const ProductsController = require("./ProductsController");
 class CategoryControler {
   //GET /category
@@ -18,7 +18,8 @@ class CategoryControler {
     try {
       const _id = req.params.id;
       if (_id) {
-        const products = ProductsController.find({ _id });
+        const products = await ProductModel.find({category_id:_id });
+        
         res.status(200).json(products);
       }
     } catch (error) {
