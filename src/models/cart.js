@@ -7,7 +7,7 @@ const Cart = new Schema({
   product:{type:ProductSchema},
   quantity:{type:Number,default:1},
   size:{type:Number,required:true},
-  userId:{type:Number,required:true}
+  userId:{type:Schema.Types.Mixed,required:true}
 },{
   timestamps:true
 })

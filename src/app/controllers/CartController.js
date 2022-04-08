@@ -3,10 +3,15 @@ class CartController {
   //GET /
   getListCartByUserId = async (req, res) => {
     try {
-      const _id = req.userId;
+      const _id = req.params.userId;
       const listCart = await CartModel.find({
         userId: _id,
-      });
+      }).exec();
+      if (!listCart) {
+        return res.status(400).json({
+          error: "get error !!",
+        });
+      }
       res.status(200).json(listCart);
     } catch (error) {
       res.status(500).json({
@@ -22,7 +27,9 @@ class CartController {
       const newCart = new CartModel(data);
       const cartProduct = await newCart.save();
       if (!cartProduct) {
-        return res.status(400).json({ message: "Add cart error !!!" });
+        return res.status(400).json({
+          message: "Add cart error !!!",
+        });
       }
       res.status(200).json(cartProduct);
     } catch (error) {
@@ -46,7 +53,9 @@ class CartController {
         }
       );
       if (!dataUpdate) {
-        return res.status(400).json({ message: "Update error !!" });
+        return res.status(400).json({
+          message: "Update error !!",
+        });
       }
       res.status(200).json(dataUpdate);
     } catch (error) {
@@ -59,9 +68,13 @@ class CartController {
   deleteCart = async (req, res) => {
     const { id } = req.params;
     try {
-      const producDelete = await CartModel.deleteOne({ _id: id });
+      const producDelete = await CartModel.deleteOne({
+        _id: id,
+      });
       if (!producDelete) {
-        return res.status(400).json({ message: "delete error !!!" });
+        return res.status(400).json({
+          message: "delete error !!!",
+        });
       }
       res.status(200).json(producDelete);
     } catch (error) {}
