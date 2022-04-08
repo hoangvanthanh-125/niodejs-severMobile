@@ -5,7 +5,9 @@ const { engine } = require('express-handlebars');
 var cors = require('cors')
 const route = require('./routes')
 const db = require('./config/db')
-
+var bodyParser = require('body-parser');
+app.use(bodyParser.urlencoded({ extended: false }))
+app.use(bodyParser.json())
 db.connect();
 
 app.use(cors())
