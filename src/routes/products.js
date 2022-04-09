@@ -5,7 +5,11 @@ const router = express.Router();
 const multer = require("multer");
 const storage = multer.diskStorage({
   destination: function (req, file, cb) {
-    cb(null, path.join(__dirname, "../public/images"));
+    if (["image/jpg", "image/png", "image/jpeg"].includes(file.mimetype)) {
+      cb(null, path.join(__dirname, "../public/images"));
+    } else {
+      cb(new Error("file not a image"), false);
+    }
   },
   filename: function (req, file, cb) {
     const list = file.mimetype.split("/");
