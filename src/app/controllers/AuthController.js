@@ -7,10 +7,9 @@ class AuthController {
   register = async (req, res) => {
     try {
       const data = req.body;
-      console.log(data);
-      const { username } = data;
-      const userData = await UserModel.findOne({ username });
-      console.log(userData);
+      console.log(data)
+      const { email } = data;
+      const userData = await UserModel.findOne({ email });
       if (userData) {
         return res
           .status(409)
@@ -23,18 +22,17 @@ class AuthController {
         message: "Register succsessfully <3",
       });
     } catch (error) {
+      console.log(error)
       res.status(500).json({ message: "server error !!!" });
     }
   };
 
   //post :auth/login
   login = async (req, res) => {
-    console.log(Object.keys(req));
     let data = req.body;
-    console.log(data);
-    let { username, password } = data;
+    let { email, password } = data;
     try {
-      const user = await UserModel.findOne({ username, password });
+      const user = await UserModel.findOne({ email, password });
       if (!user) {
         res.status(400).json({ message: "Sai tên đăng nhập hoặc mật khẩu" });
       } else {

@@ -30,9 +30,16 @@ class ProductsController {
   updateProduct(req, res) {}
 
   createProduct = async(req, res) => {
+    let listImages =  req.files.map(file => {
+      const index = file.path.indexOf("public");
+      return file.path.slice(index + 6);
+    })
+  if(!req.files){
+    return res.status(400).json({message:"Upload file failed"});
+  }
     try {
       const data = req.body;
-      const newProduct = new ProductModel(data);
+      const newProduct = new ProductModel({...data,images:listImages});
       const product = await newProduct.save();
       res.status(200).json(product);
     } catch (error) {
