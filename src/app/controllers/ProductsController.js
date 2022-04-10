@@ -3,9 +3,15 @@ const { ProductModel } = require("./../../models/Products");
 class ProductsController {
   //GET /
   showAllproduct = async (req, res) => {
+    const {sort_by}  = req.query;
+    const sort = {}
+    if(['price_asc','price_desc','createdAt_asc','createdAt_desc'].includes(sort_by)){
+      const sortArr = sort_by.split("_");
+      sort[sortArr[0]] = sortArr[1];
+    }
     const filter = req.filter;
     try {
-      const products = await ProductModel.find(filter);
+      const products = await ProductModel.find(filter).sort(sort);
       res.status(200).json(products);
     } catch (error) {
       res.status(500).json({

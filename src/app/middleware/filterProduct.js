@@ -8,7 +8,7 @@ const filterProduct = (req, res, next) => {
     if (typeof Number(min) !== "number" || typeof Number(max) !== "number") {
       return res.status(400).json({ message: "min and max phai la 1 so" });
     }
-    query.price = { $gt: min, $lt: max };
+    query.price = { $gte: min, $lte: max };
   }
   req.filter = query;
   next();
