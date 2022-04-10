@@ -29,6 +29,7 @@ router.post(
 );
 router.get("/:id", productsController.showProductById);
 router.put("/:id", productsController.updateProduct);
+router.get("/category/:id",filterProduct,productsController.showProductByCategory)
 router.get("/",filterProduct, productsController.showAllproduct);
 
 module.exports = router;
