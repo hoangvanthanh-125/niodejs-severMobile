@@ -15,10 +15,11 @@ class CategoryControler {
   };
   //Get by id : /category/:id
   showProductByCategory = async (req, res) => {
+    const filter = req.filter;
     try {
       const _id = req.params.id;
       if (_id) {
-        const products = await ProductModel.find({category_id:_id });
+        const products = await ProductModel.find({category_id:_id ,...filter});
         
         res.status(200).json(products);
       }

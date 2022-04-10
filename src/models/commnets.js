@@ -4,11 +4,12 @@ const ObjectId = Schema.ObjectId;
 const Comments = new Schema(
   {
     content: { type: Schema.Types.Mixed, required: true },
-    user: {
-      id: { type: ObjectId },
-      name: { type: String, required: true },
-    },
-    idProduct: ObjectId,
+    // user: {
+    //   id: { type: ObjectId },
+    //   name: { type: String, required: true },
+    // },
+    idProduct: Schema.Types.Mixed,
+    rating: { type: Number, defaultL: 0 },
   },
   {
     timestamps: true,
