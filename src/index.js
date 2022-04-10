@@ -8,9 +8,9 @@ const db = require('./config/db')
 var bodyParser = require('body-parser');
 app.use(bodyParser.urlencoded({ extended: false }))
 app.use(bodyParser.json())
-app.get('/add',(req,res) =>{
-  res.render('search');
-} )
+// app.get('/add',(req,res) =>{
+//   res.render('search');
+// } )
 db.connect();
 
 app.use(cors())

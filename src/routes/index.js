@@ -8,7 +8,6 @@ const userrouter = require("./user")
 const ordersRouter  = require('./orders');
 const commentsRouter = require('./comments');
 function route(app) {
-  app.use('/news',newsRouter);
   app.use('/products',productsRouter);
   app.use('/category',categoryRouter);
   app.use('/auth',authRouter);
