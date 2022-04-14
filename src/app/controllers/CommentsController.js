@@ -1,21 +1,41 @@
+const { PAGE_SIZE } = require("../../constants");
 const CommentsModel = require("../../models/commnets");
 const updateRating = require("../middleware/updateRating");
-const { ProductModel } = require("./../../models/Products");
 class CommentController {
   //post /comments/:idProduct
   getCommentsByIdProduct = async (req, res) => {
+    let { sort_by, page } = req.query;
+    if (!page || !Number.isInteger(Number(page))) {
+      page = 1;
+    }
+    const skip = PAGE_SIZE * (page - 1);
+    const sort = {};
+    if (["createdAt_asc", "createdAt_desc"].includes(sort_by)) {
+      const sortArr = sort_by.split("_");
+      sort[sortArr[0]] = sortArr[1];
+    }
     const { idProduct } = req.params;
-    console.log(idProduct);
     try {
-      const listComment = await CommentsModel.find({ idProduct });
+      const listComment = await CommentsModel.find({ idProduct })
+        .sort(sort)
+        .skip(skip)
+        .limit(PAGE_SIZE);
       if (!listComment) {
         return res.status(400).json({ message: "failed" });
       }
-      res.status(200).json(listComment);
+      const total_comments = await CommentsModel.countDocuments({ idProduct });
+      res.status(200).json({
+        page: Number(page),
+        total_page: Math.ceil(total_comments / PAGE_SIZE),
+        total_comments,
+        data: listComment,
+      });
     } catch (error) {
       res.status(500).json("Server error !!!");
     }
   };
+
+  // posst :/comments
   postComment = async (req, res) => {
     const data = req.body;
     const { rating, idProduct } = data;
