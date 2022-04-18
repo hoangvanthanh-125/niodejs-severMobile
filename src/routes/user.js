@@ -3,5 +3,6 @@ const UserController = require("../app/controllers/UserController");
 const checkLogin = require("../app/middleware/checkLogin");
 const router = express.Router();
 router.use(checkLogin);
-router.put("/:id",UserController.updateUser)
+router.put("/:id",UserController.updateUser);
+router.get("/:id",UserController,UserController.getUserById)
 module.exports = router;
