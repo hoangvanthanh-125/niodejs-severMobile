@@ -22,5 +22,19 @@ class UserController {
       res.status(500).json("Server error !!!");
     }
   };
+// get /user/:id
+  getUserById = async(req,res) => {
+     const {id} = req.params;
+     try {
+       const user = await UserModel.findById(id);
+       if(!user){
+         return res.status(400).json({message:"bad request"});
+       }
+       else return res.status(200).json(user);
+     } catch (error) {
+      res.status(500).json("Server error !!!");
+     }
+  }
 }
+ 
 module.exports = new UserController();
