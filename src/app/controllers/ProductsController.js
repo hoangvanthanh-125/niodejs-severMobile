@@ -26,6 +26,7 @@ class ProductsController {
           discount: 1,
           vote_average: 1,
           images: 1,
+          category_id:1
         })
         .sort(sort)
         .skip(skip)
