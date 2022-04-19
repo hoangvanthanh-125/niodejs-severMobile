@@ -18,7 +18,7 @@ const Product = new Schema(
       required: true,
     },
     category_id: {
-      type: ObjectId,
+      type: Schema.Types.Mixed,
       required: true,
     },
     discount: {

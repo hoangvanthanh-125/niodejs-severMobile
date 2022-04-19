@@ -4,6 +4,7 @@ const productsController = require("../app/controllers/ProductsController");
 const router = express.Router();
 const multer = require("multer");
 const filterProduct = require("../app/middleware/filterProduct");
+const { nextTick } = require("process");
 const storage = multer.diskStorage({
   destination: function (req, file, cb) {
     if (["image/jpg", "image/png", "image/jpeg"].includes(file.mimetype)) {

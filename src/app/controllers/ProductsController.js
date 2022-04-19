@@ -1,5 +1,6 @@
 const { ProductModel } = require("./../../models/Products");
 const { PAGE_SIZE } = require("./../../constants");
+const cloudinary = require("./../cloudinary");
 class ProductsController {
   //GET /
   showAllproduct = async (req, res) => {
@@ -26,7 +27,7 @@ class ProductsController {
           discount: 1,
           vote_average: 1,
           images: 1,
-          category_id:1
+          category_id: 1,
         })
         .sort(sort)
         .skip(skip)
@@ -48,7 +49,7 @@ class ProductsController {
   //get :/product/category/:id
   showProductByCategory = async (req, res) => {
     const filter = req.filter;
-    const { sort_by, page } = req.query;
+    let { sort_by, page } = req.query;
     if (!page || !Number.isInteger(Number(page))) {
       page = 1;
     }
@@ -91,6 +92,7 @@ class ProductsController {
         });
       }
     } catch (error) {
+      console.log(error.message);
       res.status(500).json({
         error,
       });
@@ -112,18 +114,25 @@ class ProductsController {
   //put : /products/:id
   updateProduct(req, res) {}
 
+  //poss: /products/create
   createProduct = async (req, res) => {
-    let listImages = req.files.map((file) => {
-      const index = file.path.indexOf("public");
-      return file.path.slice(index + 6);
-    });
-    if (!req.files) {
+    var images = [];
+    const files = req?.files;
+    if (!files) {
       return res.status(400).json({ message: "Upload file failed" });
     }
+    
+   
     try {
+      for(const file of files){
+        const result = await cloudinary.v2.uploader.upload(
+          file.path
+        );
+        images.push(result?.secure_url)
+      };
+
       const data = req.body;
-      console.log(data);
-      const newProduct = new ProductModel({ ...data, images: listImages });
+      const newProduct = new ProductModel({ ...data, images });
       const product = await newProduct.save();
       res.status(200).json(product);
     } catch (error) {
