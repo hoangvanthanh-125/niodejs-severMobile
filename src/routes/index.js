@@ -1,4 +1,3 @@
-const newsRouter = require('./news')
 const siteRouter = require('./site');
 const productsRouter = require('./products');
 const categoryRouter = require('./category');
