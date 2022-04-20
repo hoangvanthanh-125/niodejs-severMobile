@@ -28,6 +28,7 @@ router.post(
   upload.array("test", 12),
   productsController.createProduct
 );
+router.get("/trending",productsController.getListTrending)
 router.get("/:id", productsController.showProductById);
 router.put("/:id", productsController.updateProduct);
 router.get("/category/:id",filterProduct,productsController.showProductByCategory)

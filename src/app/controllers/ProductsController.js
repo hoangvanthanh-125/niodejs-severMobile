@@ -1,6 +1,8 @@
 const { ProductModel } = require("./../../models/Products");
+const CategoryModel = require("./../../models/category");
 const { PAGE_SIZE } = require("./../../constants");
 const cloudinary = require("./../cloudinary");
+const { json } = require("express/lib/response");
 class ProductsController {
   //GET /
   showAllproduct = async (req, res) => {
@@ -121,15 +123,12 @@ class ProductsController {
     if (!files) {
       return res.status(400).json({ message: "Upload file failed" });
     }
-    
-   
+
     try {
-      for(const file of files){
-        const result = await cloudinary.v2.uploader.upload(
-          file.path
-        );
-        images.push(result?.secure_url)
-      };
+      for (const file of files) {
+        const result = await cloudinary.v2.uploader.upload(file.path);
+        images.push(result?.secure_url);
+      }
 
       const data = req.body;
       const newProduct = new ProductModel({ ...data, images });
@@ -138,6 +137,27 @@ class ProductsController {
     } catch (error) {
       res.status(500).json({ error });
     }
+  };
+
+  // get : /product/trending
+  getListTrending = async (req, res, next) => {
+    const listTrending = {};
+    try {
+      const listCategory = await CategoryModel.find({});
+      console.log(listCategory[0]._id.toString())
+      for (let category of listCategory) {
+        const listProduct = await ProductModel.find({
+          category_id:category._id.toString(),
+        }).limit(5);
+        const dataProductTrending = {};
+        dataProductTrending.data = listProduct;
+        dataProductTrending._id = category._id.toString();
+        listTrending[category.name] = dataProductTrending;
+      }
+      res.json(listTrending)
+    } catch (error) {
+      res.status(500).json("err server")
+     }
   };
 }
 
