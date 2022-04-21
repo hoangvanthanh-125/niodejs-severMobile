@@ -1,8 +1,7 @@
 const { ProductModel } = require("./../../models/Products");
 const CategoryModel = require("./../../models/category");
-const { PAGE_SIZE } = require("./../../constants");
+const { PAGE_SIZE, renderListColorProducts } = require("./../../constants");
 const cloudinary = require("./../cloudinary");
-const { json } = require("express/lib/response");
 class ProductsController {
   //GET /
   showAllproduct = async (req, res) => {
@@ -131,20 +130,21 @@ class ProductsController {
       }
 
       const data = req.body;
-      const newProduct = new ProductModel({ ...data, images });
+      const colors = renderListColorProducts()
+      const newProduct = new ProductModel({ ...data, images,colors });
       const product = await newProduct.save();
       res.status(200).json(product);
     } catch (error) {
+      console.log(error.message);
       res.status(500).json({ error });
     }
   };
 
   // get : /product/trending
   getListTrending = async (req, res, next) => {
-    const listTrending = {};
+    const listTrending = [];
     try {
       const listCategory = await CategoryModel.find({});
-      console.log(listCategory[0]._id.toString())
       for (let category of listCategory) {
         const listProduct = await ProductModel.find({
           category_id:category._id.toString(),
@@ -152,7 +152,8 @@ class ProductsController {
         const dataProductTrending = {};
         dataProductTrending.data = listProduct;
         dataProductTrending._id = category._id.toString();
-        listTrending[category.name] = dataProductTrending;
+        dataProductTrending.name = category.name;
+        listTrending.push(dataProductTrending);
       }
       res.json(listTrending)
     } catch (error) {
