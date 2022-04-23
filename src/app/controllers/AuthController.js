@@ -5,6 +5,7 @@ const jwt = require("jsonwebtoken");
 class AuthController {
   //register /auth/register
   register = async (req, res) => {
+    console.log(req.body)
     try {
       const data = req.body;
       console.log(data)
@@ -22,7 +23,7 @@ class AuthController {
         message: "Register succsessfully <3",
       });
     } catch (error) {
-      console.log(error)
+      console.log(error.message)
       res.status(500).json({ message: "server error !!!" });
     }
   };
