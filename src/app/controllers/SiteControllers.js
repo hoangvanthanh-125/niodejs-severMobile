@@ -1,9 +1,10 @@
 const Course = require("./../../models/Course");
 const { ProductModel } = require("../../models/Products");
-const {PAGE_SIZE} = require('./../../constants')
+const { PAGE_SIZE } = require("./../../constants");
 class SiteController {
   searchProductByName = async (req, res) => {
     const { name } = req.query;
+    const filter = req.filter;
     let { sort_by, page } = req.query;
     if (!page || !Number.isInteger(Number(page))) {
       page = 1;
@@ -23,13 +24,14 @@ class SiteController {
     }
     try {
       const listProductSearch = await ProductModel.find({
+        ...filter,
         name: { $regex: ".*" + name + ".*", $options: "i" },
       })
         .sort(sort)
         .skip(skip)
         .limit(PAGE_SIZE);
       const total_products = await ProductModel.countDocuments({
-        name: { $regex: ".*" + name + ".*", $options: "i" },
+        name: { $regex: ".*" + name + ".*", $options: "i" },...filter
       });
       if (!listProductSearch) {
         return res.status(400).json({ message: "failed!!" });
