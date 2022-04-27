@@ -92,14 +92,14 @@ class OrdersController {
   };
 
   createOrder = async (req, res) => {
-    const data = {
-      orders_id: ["6250685c11a18144ff6e68ea"],
-      shipping_infomation: "62694834400c9f19026ae584",
-      quantity_items: 3,
-      total_price: 123,
-      user_id: "123",
-    };
-    // const data = req.body;
+    // const data = {
+    //   orders_id: ["6250685c11a18144ff6e68ea"],
+    //   shipping_infomation: "62694834400c9f19026ae584",
+    //   quantity_items: 3,
+    //   total_price: 123,
+    //   user_id: "123",
+    // };
+    const data = req.body;
     const reqQuery = req.query;
     if (reqQuery.status) {
       query.status = reqQuery.status;
