@@ -1,15 +1,14 @@
-const { use } = require("express/lib/router");
 const UserModel = require("./../../models/user");
 const jwt = require("jsonwebtoken");
+const ShippingInfomationModel = require("./../../models/shippingInfomation");
 
 class AuthController {
   //register /auth/register
   register = async (req, res) => {
-    console.log(req.body)
     try {
       const data = req.body;
-      console.log(data)
-      const { email } = data;
+      const { email, gender, password, ...shippingInfo } = data;
+      console.log(shippingInfo);
       const userData = await UserModel.findOne({ email });
       if (userData) {
         return res
@@ -18,12 +17,24 @@ class AuthController {
       }
       const newUser = new UserModel(data);
       const user = await newUser.save();
+      if (!user) {
+        return res.status(400).json("failed");
+      }
+      const newShipping = await new ShippingInfomationModel({
+        ...shippingInfo,
+        default: true,
+        userId: user._id,
+      }).save();
+      if (!newShipping) {
+        return res.status(400).json("failed");
+      }
+
       res.status(200).json({
         user,
         message: "Register succsessfully <3",
       });
     } catch (error) {
-      console.log(error.message)
+      console.log(error.message);
       res.status(500).json({ message: "server error !!!" });
     }
   };

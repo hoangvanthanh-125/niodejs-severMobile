@@ -6,6 +6,7 @@ const cartRouter = require('./cart')
 const userrouter = require("./user")
 const ordersRouter  = require('./orders');
 const commentsRouter = require('./comments');
+const shippingRouter = require('./shippingInfomation');
 function route(app) {
   app.use('/products',productsRouter);
   app.use('/category',categoryRouter);
@@ -14,6 +15,7 @@ function route(app) {
   app.use('/user',userrouter)
   app.use('/comments',commentsRouter);
   app.use('/orders',ordersRouter)
+  app.use('/shipping-infomation',shippingRouter)
   app.use('/',siteRouter)
 
 
