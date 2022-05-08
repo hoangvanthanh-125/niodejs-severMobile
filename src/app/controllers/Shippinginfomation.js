@@ -3,14 +3,13 @@ var mongoose = require('mongoose');
 var id = mongoose.Types.ObjectId();
 class ShippingInfomation {
   getListShippingByUserId = async (req, res) => {
-    const { userId } = req.query;
-    console.log(typeof userId)
+    const { user_id } = req.query;
     const query = {};
-    if(userId){
-      query.userId = userId;
+    if(user_id){
+      query.user_id = user_id;
     }
     try {
-      const listShipping = await ShippingInfomationModel.find({userId});
+      const listShipping = await ShippingInfomationModel.find({user_id});
       if (!listShipping) {
         return res.status(400).json("failed");
       }

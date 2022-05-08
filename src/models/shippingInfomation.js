@@ -4,7 +4,7 @@ const ObjectId = Schema.ObjectId;
 
 const ShippingInfomation = new Schema(
   {
-    userId: {
+    user_id: {
       type: Schema.Types.Mixed,
     },
     fullName: {
