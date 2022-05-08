@@ -107,15 +107,15 @@ class OrdersController {
     try {
       const listCart = await CartModel.find({ _id: { $in: data.orders_id } })
         .lean()
-        .select({ userId: 0, createdAt: 0, updatedAt: 0, _id: 0 });
+        .select({ user_id: 0, createdAt: 0, updatedAt: 0, _id: 0 });
       if (!listCart) {
         return res.status(400).json("failed");
       }
       const order = { ...data };
       delete order.orders_id;
       order.order_products = listCart.map((item) => {
-        item.order_product_item = item.idProduct;
-        delete item.idProduct;
+        item.order_product_item = item.product_id;
+        delete item.product_id;
         return { ...item };
       });
       const newOrder = await new OrdersModel(order).save();
