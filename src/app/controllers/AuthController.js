@@ -23,7 +23,7 @@ class AuthController {
       const newShipping = await new ShippingInfomationModel({
         ...shippingInfo,
         default: true,
-        userId: user._id.toString(),
+        user_id: user._id.toString(),
       }).save();
       if (!newShipping) {
         return res.status(400).json("failed");
