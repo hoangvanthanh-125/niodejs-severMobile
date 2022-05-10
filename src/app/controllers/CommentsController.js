@@ -14,6 +14,9 @@ class CommentController {
       const sortArr = sort_by.split("_");
       sort[sortArr[0]] = sortArr[1];
     }
+    else{
+      sort = {createdAt:"desc"}
+    }
     const { product_id } = req.query;
     try {
       const listComment = await CommentsModel.find({ product_id })
