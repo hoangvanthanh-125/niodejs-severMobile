@@ -9,14 +9,14 @@ class CommentController {
       page = 1;
     }
     const skip = PAGE_SIZE * (page - 1);
-    const sort = {};
+    let sort = {};
     if (["createdAt_asc", "createdAt_desc"].includes(sort_by)) {
       const sortArr = sort_by.split("_");
       sort[sortArr[0]] = sortArr[1];
     }
-    // else{
-    //   sort = {createdAt:"desc"}
-    // }
+    else{
+      sort = {createdAt:"desc"}
+    }
     const { product_id } = req.query;
     try {
       const listComment = await CommentsModel.find({ product_id })
