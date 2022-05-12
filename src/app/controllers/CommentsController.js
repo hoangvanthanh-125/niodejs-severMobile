@@ -1,6 +1,7 @@
 const { PAGE_SIZE } = require("../../constants");
 const CommentsModel = require("../../models/commnets");
 const updateRating = require("../middleware/updateRating");
+const { ProductModel } = require("./../../models/Products");
 class CommentController {
   //post /comments/:product_id
   getCommentsByIdProduct = async (req, res) => {
@@ -13,15 +14,17 @@ class CommentController {
     if (["createdAt_asc", "createdAt_desc"].includes(sort_by)) {
       const sortArr = sort_by.split("_");
       sort[sortArr[0]] = sortArr[1];
-    }
-    else{
-      sort = {createdAt:"desc"}
+    } else {
+      sort = { createdAt: "desc" };
     }
     const { product_id } = req.query;
     try {
       const listComment = await CommentsModel.find({ product_id })
         .lean()
-        .populate("user_id")
+        .populate({
+          path: "user_id",
+          select: { fullName: 1, avatar: 1 },
+        })
         .sort(sort)
         .skip(skip)
         .limit(PAGE_SIZE);
@@ -34,10 +37,15 @@ class CommentController {
         return item;
       });
       const total_comments = await CommentsModel.countDocuments({ product_id });
+      const product = await ProductModel.findOne({_id:{$eq:product_id}}).lean();
+      
+    
       res.status(200).json({
         page: Number(page),
         total_page: Math.ceil(total_comments / PAGE_SIZE),
         total_comments,
+        vote_count:product.vote_count,
+        vote_average:product.vote_average,
         data: comments,
       });
     } catch (error) {
@@ -55,7 +63,7 @@ class CommentController {
       const comment = await newComment.save();
       const commentData = await newComment.populate("user_id");
       commentData._doc.user = commentData._doc.user_id;
-      console.log(Object.keys(commentData))
+      console.log(Object.keys(commentData));
       delete commentData._doc.user_id;
 
       if (!commentData) {
@@ -79,7 +87,9 @@ class CommentController {
         {
           new: true,
         }
-      ).lean().populate("user_id");
+      )
+        .lean()
+        .populate("user_id");
       if (!commentUpdate) {
         return res.status(400).json({ message: "update failed" });
       }
