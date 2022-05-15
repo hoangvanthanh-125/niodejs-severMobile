@@ -2,7 +2,7 @@ const CommentsModel = require("./../../models/commnets");
 const {ProductModel} = require("./../../models/Products.js");
 const updateRating = async (rating,res,idProduct) => {
   if (rating && rating > 0) {
-    const listComment = await CommentsModel.find({ idProduct });
+    const listComment = await CommentsModel.find({ product_id:idProduct });
     if (!listComment) {
       return res.status(400).json({ message: "failed" });
     } else {
