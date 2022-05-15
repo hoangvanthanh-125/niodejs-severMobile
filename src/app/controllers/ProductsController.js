@@ -27,6 +27,7 @@ class ProductsController {
           price: 1,
           discount: 1,
           vote_average: 1,
+          vote_count:1,
           images: 1,
           category_id: 1,
         })
